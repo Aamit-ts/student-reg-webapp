@@ -12,7 +12,7 @@
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<sonar.host.url>http://13.57.24.74:9000/</sonar.host.url>
+		<sonar.host.url>http://13.61.189.179:9000/</sonar.host.url>
 		<sonar.token>sqa_a20aa98db9ee7de5db4875250f4536996c3d49c1</sonar.token>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
@@ -25,11 +25,11 @@
     <distributionManagement>
 		<repository>
 			<id>nexus</id>
-			<url>http://13.57.13.23:8081/repository/rushitech-release/</url>
+			<url>http://13.60.226.129:8081/repository/rushitech-release/</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus</id>
-			<url>http://13.57.13.23:8081/repository/rushitech-snapshot/</url>
+			<url>http://13.60.226.129:8081/repository/rushitech-snapshot/</url>
 		</snapshotRepository>
     </distributionManagement>
 
