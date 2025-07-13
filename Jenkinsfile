@@ -12,7 +12,7 @@ pipeline {
     }
 
     tools {
-        maven 'Maven_3.9.10'
+        #maven 'Maven_3.9.10'
     }
 
     environment {
