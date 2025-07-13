@@ -58,14 +58,14 @@ post {
             cleanWs()
         }
         success {
-       #slackSend (channel: 'lic-appteam', color: "good", message: "Build - SUCCESS : ${env.JOB_NAME} #${env.BUILD_NUMBER} - URL: ${env.BUILD_URL}")
+       //slackSend (channel: 'lic-appteam', color: "good", message: "Build - SUCCESS : ${env.JOB_NAME} #${env.BUILD_NUMBER} - URL: ${env.BUILD_URL}")
           sendEmail(
            "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build SUCCESS",
            "Build SUCCESS. Please check the console output at ${env.BUILD_URL}",
            'shirsathamit2025@gmail.com' )
         }
         failure {
-         #slackSend (channel: 'lic-appteam', color: "danger", message: "Build - FAILED : ${env.JOB_NAME} #${env.BUILD_NUMBER} - URL: ${env.BUILD_URL}")
+         //slackSend (channel: 'lic-appteam', color: "danger", message: "Build - FAILED : ${env.JOB_NAME} #${env.BUILD_NUMBER} - URL: ${env.BUILD_URL}")
          sendEmail(
            "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build FAILED",
            "Build FAILED. Please check the console output at ${env.BUILD_URL}",
