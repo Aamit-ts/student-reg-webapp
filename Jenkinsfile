@@ -17,21 +17,21 @@ node {
         stage("Stop Tomcat Server") {
             sshagent(['tomcat_1']) {
                 sh "echo Stopping tomcat server"
-                sh "ssh -o StrictHostKeyChecking=no ec2-user@51.21.171.100 'sudo /opt/tomcat/bin/shutdown.sh'"
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@13.60.43.145 'sudo /opt/tomcat/bin/shutdown.sh'"
                 sh "sleep 20"
             }
         }
 
         stage("Deploy Package") {
             sshagent(['tomcat_1']) {
-                sh "scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@51.21.171.100:/opt/tomcat/webapps/student-reg-webapp.war"
+                sh "scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@13.60.43.145:/opt/tomcat/webapps/student-reg-webapp.war"
             }
         }
 
         stage("Start Tomcat Server") {
             sshagent(['tomcat_1']) {
                 sh "echo Starting tomcat server"
-                sh "ssh -o StrictHostKeyChecking=no ec2-user@51.21.171.100 'sudo /opt/tomcat/bin/startup.sh'"
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@13.60.43.145 'sudo /opt/tomcat/bin/startup.sh'"
                 sh "sleep 20"
             }
         }
