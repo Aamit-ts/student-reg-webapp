@@ -1,9 +1,9 @@
+@Library('shared_lib') _
+
 pipeline {
     agent any
 
-    triggers {
-        githubPush()
-    }
+    triggers { githubPush() }
 
     options {
         buildDiscarder logRotator(numToKeepStr: '5')
@@ -20,77 +20,46 @@ pipeline {
     }
 
     stages {
-
-        stage('stage_1 Cloning Source Code From GitRepo') {
+        stage('Checkout') {
             steps {
-                echo 'Cloning using checkout scm (multibranch pipeline)'
+                echo 'Checking out source'
                 checkout scm
             }
         }
 
-        stage('stage_2 Maven verify') {
+        stage('Maven Build and Sonar') {
             steps {
                 withCredentials([string(credentialsId: 'sonar_secret', variable: 'sonar_secret')]) {
-                    sh "mvn clean package sonar:sonar -Dsonar.login=${sonar_secret}"
+                    mavenBuild(sonar_secret)
                 }
             }
         }
 
-        stage('stage_3 Upload package to Nexus') {
+        stage('Upload to Nexus') {
             steps {
                 sh "mvn clean deploy"
             }
         }
 
-        stage('stage_4 Deploy package to Tomcat') {
+        stage('Deploy to Tomcat') {
             when {
-                expression {
-                    return env.BRANCH_NAME == 'PERMAN'
-                }
+                expression { return env.BRANCH_NAME == 'NINJA' }
             }
             steps {
-                echo "Branch is ${env.BRANCH_NAME}, deploying to Tomcat..."
-                sshagent(['tomcat_1']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@${TOMCAT_SERVER_IP} '
-                            sudo rm -rf /opt/tomcat/webapps/student-reg-webapp &&
-                            sudo rm -f /opt/tomcat/webapps/student-reg-webapp.war
-                        '
-                        scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@${TOMCAT_SERVER_IP}:/opt/tomcat/webapps/student-reg-webapp.war
-                    """
-                }
+                deployToTomcat(env.TOMCAT_SERVER_IP, "target/student-reg-webapp.war", 'tomcat_1')
             }
         }
     }
 
     post {
+        success {
+            sendNotification("SUCCESS", "shirsathamit2025@gmail.com")
+        }
+        failure {
+            sendNotification("FAILED", "shirsathamit2025@gmail.com")
+        }
         always {
             cleanWs()
         }
-
-        success {
-            sendEmail(
-                "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build SUCCESS",
-                "Build SUCCESS. Please check the console output at ${env.BUILD_URL}",
-                'shirsathamit2025@gmail.com'
-            )
-        }
-
-        failure {
-            sendEmail(
-                "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build FAILED",
-                "Build FAILED. Please check the console output at ${env.BUILD_URL}",
-                'shirsathamit2025@gmail.com'
-            )
-        }
     }
-}
-
-def sendEmail(String subject, String body, String recipient) {
-    emailext(
-        subject: subject,
-        body: body,
-        to: recipient,
-        mimeType: 'text/html'
-    )
 }
