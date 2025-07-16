@@ -12,8 +12,8 @@
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<sonar.host.url>http://13.49.46.218:9000/</sonar.host.url>
-		<sonar.token>sqa_56a28a3e3f88c9511373dd1ce1df96ae0a6ad78d</sonar.token>
+		<sonar.host.url>http://13.62.19.244:9000/</sonar.host.url>
+		<sonar.token>sqa_ca45f0c77c0f681f6c42b1a261469f668ff6b253</sonar.token>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.sources>src/main/java</sonar.sources>
@@ -25,11 +25,11 @@
     <distributionManagement>
 		<repository>
 			<id>nexus</id>
-			<url>http://51.20.68.252:8081/repository/Amit/</url>
+			<url>http://13.60.10.214:8081/repository/Amit/</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus</id>
-			<url>http://51.20.68.252:8081/repository/Amit-Snapshot/</url>
+			<url>http://13.60.10.214:8081/repository/Amit-Snapshot/</url>
 		</snapshotRepository>
     </distributionManagement>
 
