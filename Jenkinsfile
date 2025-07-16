@@ -43,7 +43,7 @@ pipeline {
 
         stage('Deploy to Tomcat') {
             when {
-                expression { return env.BRANCH_NAME == 'NINJA' }
+                expression { return env.BRANCH_NAME == 'PERMAN' }
             }
             steps {
                 deployToTomcat(env.TOMCAT_SERVER_IP, "target/student-reg-webapp.war", 'tomcat_1')
