@@ -33,7 +33,7 @@ pipeline {
         stage('stage_2 Maven verify') {
             steps {
                 withCredentials([string(credentialsId: 'sonar_secret', variable: 'sonar_secret')]) {
-                    sh "maven1 clean package sonar:sonar -Dsonar.login=${sonar_secret}"
+                    sh "maven clean package sonar:sonar -Dsonar.login=${sonar_secret}"
                 }
             }
         }
