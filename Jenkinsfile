@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-   triggers {
-       githubPush()
-     }
+    triggers {
+        githubPush()
+    }
 
-   options {
-      buildDiscarder logRotator(numToKeepStr: '5')
-      timeout(time: 10, unit: 'MINUTES')
-      disableConcurrentBuilds()
+    options {
+        buildDiscarder logRotator(numToKeepStr: '5')
+        timeout(time: 10, unit: 'MINUTES')
+        disableConcurrentBuilds()
     }
 
     tools {
@@ -16,17 +16,15 @@ pipeline {
     }
 
     environment {
-        // SONARQUBE_URL = "http://13.57.206.25:9000" // Optional
         TOMCAT_SERVER_IP = "56.228.35.184"
     }
 
     stages {
+
         stage('stage_1 Cloning Source Code From GitRepo') {
             steps {
-                echo 'Git Clone'
-                git branch: 'New_Branch',
-                    credentialsId: '893d49a3-02b3-4657-b8b9-865a98636a90',
-                    url: 'https://github.com/Aamit-ts/student-reg-webapp.git'
+                echo 'Cloning using checkout scm (multibranch pipeline)'
+                checkout scm
             }
         }
 
@@ -45,38 +43,45 @@ pipeline {
         }
 
         stage('stage_4 Deploy package to Tomcat') {
-       when {
-        expression {
-            def branchName = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-            echo "Detected branch: ${branchName}"
-            return branchName == 'NINJA'
-        }
-    }
-      steps {
+            when {
+                expression {
+                    return env.BRANCH_NAME == 'NINJA'
+                }
+            }
+            steps {
+                echo "Branch is ${env.BRANCH_NAME}, deploying to Tomcat..."
                 sshagent(['tomcat_1']) {
-                    sh "scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@${TOMCAT_SERVER_IP}:/opt/tomcat/webapps/student-reg-webapp.war"
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ec2-user@${TOMCAT_SERVER_IP} '
+                            sudo rm -rf /opt/tomcat/webapps/student-reg-webapp &&
+                            sudo rm -f /opt/tomcat/webapps/student-reg-webapp.war
+                        '
+                        scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@${TOMCAT_SERVER_IP}:/opt/tomcat/webapps/student-reg-webapp.war
+                    """
                 }
             }
         }
     }
 
-post {
+    post {
         always {
             cleanWs()
         }
+
         success {
-       //slackSend (channel: 'lic-appteam', color: "good", message: "Build - SUCCESS : ${env.JOB_NAME} #${env.BUILD_NUMBER} - URL: ${env.BUILD_URL}")
-          sendEmail(
-           "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build SUCCESS",
-           "Build SUCCESS. Please check the console output at ${env.BUILD_URL}",
-           'shirsathamit2025@gmail.com' )
+            sendEmail(
+                "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build SUCCESS",
+                "Build SUCCESS. Please check the console output at ${env.BUILD_URL}",
+                'shirsathamit2025@gmail.com'
+            )
         }
+
         failure {
-         //slackSend (channel: 'lic-appteam', color: "danger", message: "Build - FAILED : ${env.JOB_NAME} #${env.BUILD_NUMBER} - URL: ${env.BUILD_URL}")
-         sendEmail(
-           "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build FAILED",
-           "Build FAILED. Please check the console output at ${env.BUILD_URL}",
-           'shirsathamit2025@gmail.com' )
+            sendEmail(
+                "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build FAILED",
+                "Build FAILED. Please check the console output at ${env.BUILD_URL}",
+                'shirsathamit2025@gmail.com'
+            )
         }
     }
 }
