@@ -45,7 +45,12 @@ pipeline {
         }
 
         stage('stage_4 Deploy package to Tomcat') {
-            steps {
+        when {
+                expression {
+                 return env.BRANCH_NAME == 'NINJA'
+             }
+            }
+      steps {
                 sshagent(['tomcat_1']) {
                     sh "scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@${TOMCAT_SERVER_IP}:/opt/tomcat/webapps/student-reg-webapp.war"
                 }
