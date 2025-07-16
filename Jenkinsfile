@@ -17,7 +17,7 @@ pipeline {
 
     environment {
         // SONARQUBE_URL = "http://13.57.206.25:9000" // Optional
-        TOMCAT_SERVER_IP = "13.60.43.145"
+        TOMCAT_SERVER_IP = "56.228.35.184"
     }
 
     stages {
