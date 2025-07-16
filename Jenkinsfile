@@ -45,7 +45,7 @@ pipeline {
         stage('stage_4 Deploy package to Tomcat') {
             when {
                 expression {
-                    return env.BRANCH_NAME == 'NINJA'
+                    return env.BRANCH_NAME == 'PERMAN'
                 }
             }
             steps {
