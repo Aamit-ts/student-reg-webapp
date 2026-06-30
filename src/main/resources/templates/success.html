@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Yash Technologies - Success</title>
+    <title>NINJA Technologies - Success</title>
  <link href="css/rushi-style.css" rel="stylesheet" type="text/css"/>    
 </head>
 
 <body>
     <div class="header">
-        Yash Technologies - Contact: +91-9900012028
+        Yash Technologies - Contact: +91-9292349999
      </div>
     <div class="container">
-        <h2>Registration Successful!</h2>
+        <h2>Congratulations,Registration Successful!</h2>
          <p  class="success-message" th:text="'Thank you, ' + ${name} + ', for registering for the ' + ${course} + ' course.'"></p>
          <p  class="email-note" th:if="${emailSent}">A confirmation email has been sent to your registered email address.</p>
             <a class="btn" th:href="@{/}">Back to Home</a>
@@ -21,8 +21,8 @@
                     <img th:src="@{/images/trainer.jpg}" alt="Trainer Photo" class="trainer-img" />
                 </div>
                 <div class="trainer-info">
-                    <p><strong>Trainer:</strong> <b>Mr. Yash Shirsath</b><br />
-                        <strong>Contact:</strong> <b>91-9900012028</b><br />
+                    <p><strong>Trainer:</strong> <b>Mr. Amit Shirsath</b><br />
+                        <strong>Contact:</strong> <b>91-9292349999</b><br />
                         <strong>Server IP:</strong> <span th:text="${serverIp}"></span><br />
                         <strong>Client IP:</strong> <span th:text="${clientIp}"></span>
                     </p>
