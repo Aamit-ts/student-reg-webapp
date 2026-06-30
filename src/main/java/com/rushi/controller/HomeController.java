@@ -81,6 +81,6 @@ public class HomeController {
     }
 
     private List<String> getCourses() {
-        return Arrays.asList("DevOps", "AWS", "Azure", "Terraform", "Kubernetes", "Oracle", "Postgres", "Couchbase", "MYSQL");
+        return Arrays.asList("Rohit", "Virat", "Hardik", "KL Rahul", "Shreyas", "Shikhar", "Jasprit", "Jadeja", "MS DHONI");
     }
 }
